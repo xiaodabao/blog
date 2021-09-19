@@ -103,6 +103,24 @@
   <div class="bg-white mb3 pa4 gray overflow-hidden">
     <span class="f6 db">Posts</span>
     <h1 class="f3 near-black">
+      <a href="/blog/posts/leastactive/" class="link black dim">
+        LeastActive
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      负载均衡 最少活跃数算法 从实际出发，研究在开源软件中已实现的算法。本文具体分析负载均衡-最少活跃数算法，基于dubbo的LeastActiveLoadBalance源码。
+ 准备多个Invoker, 每个Invoker设置具体的名字，权重，调用次数，随机生成活跃调用数 多次调用selectInvoker方法，打印所有Invoker的活跃数，最终选择的Invoker名称 每次选择完成后，更新调用次数+1  这种方式比较适合所有服务配置差不多的情形，大部分的情况下和设置的权重关系不大，在不同的服务器配置环境下，就不能有效的利用配置更好的服务器资源。
+上代码
+import java.util.ArrayList; import java.util.List; import java.util.concurrent.ThreadLocalRandom; public class LeastActiveLoadBalance { public static final String NAME = &#34;leastactive&#34;; public static Invoker doSelect(List&lt;Invoker&gt; invokers) { // Number of invokers  int length = invokers.size(); // 最少的正在调用次数  int leastActive = -1; // 多个Invoker可能具有相同的调用次数  int leastCount = 0; // 记录选择的Invoker的索引, 他们具有相同的最少调用次数  int[] leastIndexes = new int[length]; // 记录选择的Invoker的权重  int[] weights = new int[length]; // totalWeight, 套路和随机算法差不多, 如果有多个最少调用次数的Invoker,  // 再根据权重概率随机选择一个Invoker  int totalWeight = 0; int firstWeight = 0; boolean sameWeight = true; // 存储随机生成的Invoker.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
       <a href="/blog/posts/consistenthash/" class="link black dim">
         ConsistentHash
       </a>
