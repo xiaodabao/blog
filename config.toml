@@ -1,4 +1,32 @@
 baseURL = "https://xiaodabao.github.io/blog/"
 languageCode = "en-us"
-title = "Personal Blog"
+title = "肖大宝的技术博客"
 theme = "ananke"
+
+Paginate = 10 # this is set low for demonstrating with dummy content. Set to a higher number
+
+[params]
+  background_color_class = "bg-black"
+  featured_image = "images/star_sea.jpeg"
+  SEOTitle = "肖大宝的技术博客 | xiaodabao blog"
+  description = "肖大宝, 程序员, 热爱Coding"
+  slogan = "跨国高山, 走过四季, 不忘初心, 永不言弃"
+  recent_posts_number = 20
+  image_404 = "img/404-bg.jpg"
+  title_404 = "你来到了没有知识的荒漠 :("
+  facebook = ""
+  twitter = ""
+  instagram = ""
+  youtube = ""
+  github = ""
+  gitlab = ""
+  linkedin = ""
+  mastodon = ""
+  slack = ""
+  stackoverflow = ""
+  rss = ""
+
+[taxonomies]
+    tag = "tags"
+    category = "categories"
+    archive = "archives"

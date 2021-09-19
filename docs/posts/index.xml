@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Personal Blog</title>
+    <title>Posts on 肖大宝的技术博客</title>
     <link>https://xiaodabao.github.io/blog/posts/</link>
-    <description>Recent content in Posts on Personal Blog</description>
+    <description>Recent content in Posts on 肖大宝的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 19 Sep 2021 10:25:40 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My First Blog</title>
+      <title>Load Balance RandomLoadBalance</title>
       <link>https://xiaodabao.github.io/blog/posts/my-first-blog/</link>
       <pubDate>Sun, 19 Sep 2021 10:25:40 +0800</pubDate>
       
       <guid>https://xiaodabao.github.io/blog/posts/my-first-blog/</guid>
-      <description>hello world!!! </description>
+      <description>负载均衡 随机算法 从实际出发，研究在开源软件中已实现的算法。本文具体分析负载均衡-随机算法，基于dubbo的RandomLoadBalance源码。
+ 准备多个Invoker, 每个Invoker设置具体的名字，权重，调用次数 启动多个线程，每个线程分别多次调用selectInvoker方法 每次选择完成后，更新调用次数+1 全部调用完成后，输出每个Invoker的调用次数  上代码
+import java.util.concurrent.atomic.AtomicInteger; public class Invoker { public String name; public int weight; public AtomicInteger invokeCount; public Invoker(String name, int weight) { this.name = name; this.weight = weight; invokeCount = new AtomicInteger(0); } } import java.util.ArrayList; import java.util.List; import java.util.concurrent.CountDownLatch; import java.util.concurrent.ThreadLocalRandom; /** * 负载均衡 权重随机算法 */ public class RandomLoadBalance { public static Invoker doSelect(List&amp;lt;Invoker&amp;gt; invokers) { // Number of invokers  int length = invokers.</description>
     </item>
     
   </channel>
