@@ -6,7 +6,19 @@
     <description>Recent content on 肖大宝的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Aug 2021 00:08:12 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 Aug 2021 00:16:39 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ShortestResponse</title>
+      <link>https://xiaodabao.github.io/blog/posts/shortestresponse/</link>
+      <pubDate>Sat, 21 Aug 2021 00:16:39 +0800</pubDate>
+      
+      <guid>https://xiaodabao.github.io/blog/posts/shortestresponse/</guid>
+      <description>负载均衡 最短响应时间算法 从实际出发，研究在开源软件中已实现的算法。本文具体分析负载均衡-最短响应时间算法，基于dubbo的ShortestResponseLoadBalance源码。本方法和上次介绍的最少活跃数算法的思路基本一样。
+1.准备多个Invoker, 每个Invoker设置具体的名字，权重，调用次数，随机生成平均调用时间，当前调用活跃数 2.多次调用selectInvoker方法，打印所有Invoker的活跃数，最终选择的Invoker名称 3.每次选择完成后，更新调用次数+1
+上代码
+import java.util.ArrayList; import java.util.List; import java.util.concurrent.ThreadLocalRandom; public class ShortestResponseLoadBalance { public static final String NAME = &amp;#34;shortestresponse&amp;#34;; public static Invoker doSelect(List&amp;lt;Invoker&amp;gt; invokers) { // Number of invokers  int length = invokers.size(); // 估算最短的响应时间 基于之前调用成功的平均耗时 * 当前正在调用的次数 active  long shortestResponse = Long.MAX_VALUE; // 多个Invoker可能具有相同的最短响应时间  int shortestCount = 0; // 记录选择的Invoker的索引, 他们具有相同的最短响应时间  int[] shortestIndexes = new int[length]; // 记录选择的Invoker的权重  int[] weights = new int[length]; // The sum of the warmup weights of all the shortest response invokers  int totalWeight = 0; // The weight of the first shortest response invokers  int firstWeight = 0; // Every shortest response invoker has the same weight value?</description>
+    </item>
+    
     <item>
       <title>LeastActive</title>
       <link>https://xiaodabao.github.io/blog/posts/leastactive/</link>
