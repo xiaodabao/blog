@@ -6,13 +6,24 @@
     <description>Recent content in Posts on 肖大宝的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 19 Sep 2021 10:25:40 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Aug 2021 22:10:59 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Load Balance RoundRobinLoadBalance</title>
+      <link>https://xiaodabao.github.io/blog/posts/roundrobin/</link>
+      <pubDate>Sun, 15 Aug 2021 22:10:59 +0800</pubDate>
+      
+      <guid>https://xiaodabao.github.io/blog/posts/roundrobin/</guid>
+      <description>负载均衡 轮询算法 从实际出发，研究在开源软件中已实现的算法。本文具体分析负载均衡-轮询算法，基于dubbo的RoundRobinLoadBalance源码。
+ 准备多个Invoker, 每个Invoker设置具体的名字，权重，调用次数 启动多个线程，每个线程分别多次调用selectInvoker方法 每次选择完成后，更新调用次数+1 全部调用完成后，输出每个Invoker的调用次数  上代码
+import java.util.ArrayList; import java.util.List; import java.util.concurrent.ConcurrentHashMap; import java.util.concurrent.ConcurrentMap; import java.util.concurrent.CountDownLatch; import java.util.concurrent.atomic.AtomicLong; public class RoundRobinLoadBalance { /** * 轮询+权重 */ protected static class WeightedRoundRobin { /** * weight是权重值, 在setWeight方法中进行设置, 同时将current(可认为是优先级)设置为0 */ private int weight; private AtomicLong current = new AtomicLong(0); public void setWeight(int weight) { this.weight = weight; current.set(0); } /** * Invoker每经过一次选择, 都将其优先级提高weight, 优先级提高, 下次被选中的几率变大 * @return */ public long increaseCurrent() { return current.</description>
+    </item>
+    
     <item>
       <title>Load Balance RandomLoadBalance</title>
-      <link>https://xiaodabao.github.io/blog/posts/my-first-blog/</link>
-      <pubDate>Sun, 19 Sep 2021 10:25:40 +0800</pubDate>
+      <link>https://xiaodabao.github.io/blog/posts/random/</link>
+      <pubDate>Sat, 14 Aug 2021 10:25:40 +0800</pubDate>
       
-      <guid>https://xiaodabao.github.io/blog/posts/my-first-blog/</guid>
+      <guid>https://xiaodabao.github.io/blog/posts/random/</guid>
       <description>负载均衡 随机算法 从实际出发，研究在开源软件中已实现的算法。本文具体分析负载均衡-随机算法，基于dubbo的RandomLoadBalance源码。
  准备多个Invoker, 每个Invoker设置具体的名字，权重，调用次数 启动多个线程，每个线程分别多次调用selectInvoker方法 每次选择完成后，更新调用次数+1 全部调用完成后，输出每个Invoker的调用次数  上代码
 import java.util.concurrent.atomic.AtomicInteger; public class Invoker { public String name; public int weight; public AtomicInteger invokeCount; public Invoker(String name, int weight) { this.name = name; this.weight = weight; invokeCount = new AtomicInteger(0); } } import java.util.ArrayList; import java.util.List; import java.util.concurrent.CountDownLatch; import java.util.concurrent.ThreadLocalRandom; /** * 负载均衡 权重随机算法 */ public class RandomLoadBalance { public static Invoker doSelect(List&amp;lt;Invoker&amp;gt; invokers) { // Number of invokers  int length = invokers.</description>
