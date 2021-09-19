@@ -6,7 +6,21 @@
     <description>Recent content on 肖大宝的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Aug 2021 22:10:59 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 Aug 2021 23:07:44 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ConsistentHash</title>
+      <link>https://xiaodabao.github.io/blog/posts/consistenthash/</link>
+      <pubDate>Tue, 17 Aug 2021 23:07:44 +0800</pubDate>
+      
+      <guid>https://xiaodabao.github.io/blog/posts/consistenthash/</guid>
+      <description>负载均衡 一致性Hash算法 从实际出发，研究在开源软件中已实现的算法。本文具体分析负载均衡-一致性Hash算法，基于dubbo的ConsistentHashLoadBalance源码。
+一致性Hash算法需要ConsistentHashSelector的数据结构, 内部使用TreeMap来存储Invoker和其对应的HashCode值，为了保证请求的均匀调用，一般都采用一个Invoker映射为多个虚拟节点的方式，好处很多，自行搜索。当有请求到达时，根据请求的参数来计算本次请求的Hash值，可以自行定义选择N个参数来参与Hash值的计算，相同参数的请求可以定位至同一个Invoke上（前提是Invoker列表未发生变化）
+10个Invoker在Hash环上的分布情况： 分布可能十分不均匀，造成某些服务器压力过大。
+增加多个虚拟Invoker后的分布情况： 仅画出了Invoker1的分布情况 测试代码：
+ 准备多个Invoker, 每个Invoker设置具体的名字，权重，调用次数 启动多个线程，每个线程分别多次调用selectInvoker方法 每次选择完成后，更新调用次数+1 全部调用完成后，输出每个Invoker的调用次数 设置同样的请求参数，打印每次选择的Invoker name  上代码
+import java.nio.charset.StandardCharsets; import java.security.MessageDigest; import java.security.NoSuchAlgorithmException; import java.util.*; import java.util.concurrent.ConcurrentHashMap; import java.util.concurrent.ConcurrentMap; import java.util.concurrent.CountDownLatch; public class ConsistentHashLoadBalance { public static ThreadLocal&amp;lt;MessageDigest&amp;gt; MD5 = new ThreadLocal&amp;lt;&amp;gt;(); public static final String NAME = &amp;#34;consistenthash&amp;#34;; /** * Hash nodes name */ public static final String HASH_NODES = &amp;#34;hash.nodes&amp;#34;; /** * Hash arguments name */ public static final String HASH_ARGUMENTS = &amp;#34;hash.</description>
+    </item>
+    
     <item>
       <title>Load Balance RoundRobinLoadBalance</title>
       <link>https://xiaodabao.github.io/blog/posts/roundrobin/</link>
