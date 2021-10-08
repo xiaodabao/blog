@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>SpringFactoriesLoader | 肖大宝的技术博客</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。
+Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:
+ 查找指定路径classpath:META-INF/spring.factories的所有文件。 通过PropertiesLoaderUtils加载为Properties对象 解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据 将implementationNames去重，并转换为不可变List 将全部数据以ClassLoader为key存入cache中 根据本次要加载的类型，实例化此类型下所有的实现类 所有的实现类按照PriorityOrdered、Ordered优先级依次排序  首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&lt;Interface, Implements&gt; 的形式。
+public static final String FACTORIES_RESOURCE_LOCATION = &#34;META-INF/spring.factories&#34;; static final Map&lt;ClassLoader, Map&lt;String, List&lt;String&gt;&gt;&gt; cache = new ConcurrentReferenceHashMap&lt;&gt;(); /** * 根据ClassLoader加载所有的数据 key: interfaceName --&gt; value: implementationNames * @param classLoader * @return */ private static Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(ClassLoader classLoader) { // 首先从缓存中获取  Map&lt;String, List&lt;String&gt;&gt; result = cache.get(classLoader); if (result !">
+    <meta name="generator" content="Hugo 0.88.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+<link rel="stylesheet" href="/blog/ananke/css/main.min.css" >
+
+
+
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="SpringFactoriesLoader" />
+<meta property="og:description" content="SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。
+Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:
+ 查找指定路径classpath:META-INF/spring.factories的所有文件。 通过PropertiesLoaderUtils加载为Properties对象 解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据 将implementationNames去重，并转换为不可变List 将全部数据以ClassLoader为key存入cache中 根据本次要加载的类型，实例化此类型下所有的实现类 所有的实现类按照PriorityOrdered、Ordered优先级依次排序  首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&lt;Interface, Implements&gt; 的形式。
+public static final String FACTORIES_RESOURCE_LOCATION = &#34;META-INF/spring.factories&#34;; static final Map&lt;ClassLoader, Map&lt;String, List&lt;String&gt;&gt;&gt; cache = new ConcurrentReferenceHashMap&lt;&gt;(); /** * 根据ClassLoader加载所有的数据 key: interfaceName --&gt; value: implementationNames * @param classLoader * @return */ private static Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(ClassLoader classLoader) { // 首先从缓存中获取  Map&lt;String, List&lt;String&gt;&gt; result = cache.get(classLoader); if (result !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xiaodabao.github.io/blog/posts/springfactoriesloader/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-09-29T15:16:34+08:00" />
+<meta property="article:modified_time" content="2021-09-29T15:16:34+08:00" />
+
+<meta itemprop="name" content="SpringFactoriesLoader">
+<meta itemprop="description" content="SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。
+Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:
+ 查找指定路径classpath:META-INF/spring.factories的所有文件。 通过PropertiesLoaderUtils加载为Properties对象 解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据 将implementationNames去重，并转换为不可变List 将全部数据以ClassLoader为key存入cache中 根据本次要加载的类型，实例化此类型下所有的实现类 所有的实现类按照PriorityOrdered、Ordered优先级依次排序  首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&lt;Interface, Implements&gt; 的形式。
+public static final String FACTORIES_RESOURCE_LOCATION = &#34;META-INF/spring.factories&#34;; static final Map&lt;ClassLoader, Map&lt;String, List&lt;String&gt;&gt;&gt; cache = new ConcurrentReferenceHashMap&lt;&gt;(); /** * 根据ClassLoader加载所有的数据 key: interfaceName --&gt; value: implementationNames * @param classLoader * @return */ private static Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(ClassLoader classLoader) { // 首先从缓存中获取  Map&lt;String, List&lt;String&gt;&gt; result = cache.get(classLoader); if (result !"><meta itemprop="datePublished" content="2021-09-29T15:16:34+08:00" />
+<meta itemprop="dateModified" content="2021-09-29T15:16:34+08:00" />
+<meta itemprop="wordCount" content="410">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SpringFactoriesLoader"/>
+<meta name="twitter:description" content="SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。
+Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:
+ 查找指定路径classpath:META-INF/spring.factories的所有文件。 通过PropertiesLoaderUtils加载为Properties对象 解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据 将implementationNames去重，并转换为不可变List 将全部数据以ClassLoader为key存入cache中 根据本次要加载的类型，实例化此类型下所有的实现类 所有的实现类按照PriorityOrdered、Ordered优先级依次排序  首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&lt;Interface, Implements&gt; 的形式。
+public static final String FACTORIES_RESOURCE_LOCATION = &#34;META-INF/spring.factories&#34;; static final Map&lt;ClassLoader, Map&lt;String, List&lt;String&gt;&gt;&gt; cache = new ConcurrentReferenceHashMap&lt;&gt;(); /** * 根据ClassLoader加载所有的数据 key: interfaceName --&gt; value: implementationNames * @param classLoader * @return */ private static Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(ClassLoader classLoader) { // 首先从缓存中获取  Map&lt;String, List&lt;String&gt;&gt; result = cache.get(classLoader); if (result !"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/blog/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        肖大宝的技术博客
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://xiaodabao.github.io/blog/posts/springfactoriesloader/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://xiaodabao.github.io/blog/posts/springfactoriesloader/&amp;text=SpringFactoriesLoader" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://xiaodabao.github.io/blog/posts/springfactoriesloader/&amp;title=SpringFactoriesLoader" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">SpringFactoriesLoader</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2021-09-29T15:16:34+08:00">September 29, 2021</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。</p>
+<p>Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:</p>
+<ol>
+<li>查找指定路径classpath:META-INF/spring.factories的所有文件。</li>
+<li>通过PropertiesLoaderUtils加载为Properties对象</li>
+<li>解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据</li>
+<li>将implementationNames去重，并转换为不可变List</li>
+<li>将全部数据以ClassLoader为key存入cache中</li>
+<li>根据本次要加载的类型，实例化此类型下所有的实现类</li>
+<li>所有的实现类按照PriorityOrdered、Ordered优先级依次排序</li>
+</ol>
+<p>首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&lt;Interface, Implements&gt; 的形式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FACTORIES_RESOURCE_LOCATION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;META-INF/spring.factories&#34;</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>ClassLoader<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;&gt;</span> cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ConcurrentReferenceHashMap<span style="color:#f92672">&lt;&gt;();</span>
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">* 根据ClassLoader加载所有的数据  key: interfaceName --&gt; value: implementationNames
+</span><span style="color:#75715e">* @param classLoader
+</span><span style="color:#75715e">* @return
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">loadSpringFactories</span><span style="color:#f92672">(</span>ClassLoader classLoader<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 首先从缓存中获取
+</span><span style="color:#75715e"></span>    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> result <span style="color:#f92672">=</span> cache<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>classLoader<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>result <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 在所有的jar包中搜索classpath:META-INF/spring.factories
+</span><span style="color:#75715e"></span>        Enumeration<span style="color:#f92672">&lt;</span>URL<span style="color:#f92672">&gt;</span> urls <span style="color:#f92672">=</span> classLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">getResources</span><span style="color:#f92672">(</span>FACTORIES_RESOURCE_LOCATION<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>urls<span style="color:#f92672">.</span><span style="color:#a6e22e">hasMoreElements</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            URL url <span style="color:#f92672">=</span> urls<span style="color:#f92672">.</span><span style="color:#a6e22e">nextElement</span><span style="color:#f92672">();</span>
+            UrlResource resource <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UrlResource<span style="color:#f92672">(</span>url<span style="color:#f92672">);</span>
+            <span style="color:#75715e">// 将url封装为Resource, 并加载到Properties中
+</span><span style="color:#75715e"></span>            Properties properties <span style="color:#f92672">=</span> PropertiesLoaderUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">loadProperties</span><span style="color:#f92672">(</span>resource<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;?,</span> <span style="color:#f92672">?&gt;</span> entry <span style="color:#f92672">:</span> properties<span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                <span style="color:#75715e">// key 为 抽象类型 interface、abstractType
+</span><span style="color:#75715e"></span>                String factoryTypeName <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">trim</span><span style="color:#f92672">();</span>
+                <span style="color:#75715e">// 将实现类使用, 分割为实现类数组
+</span><span style="color:#75715e"></span>                String<span style="color:#f92672">[]</span> factoryImplementationNames <span style="color:#f92672">=</span>
+                        StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">commaDelimitedListToStringArray</span><span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+                <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String factoryImplementationName <span style="color:#f92672">:</span> factoryImplementationNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#75715e">// 处理实现类, 如果多个jar包中存在多个相同的接口key, 在这里也会进行合并
+</span><span style="color:#75715e"></span>                    result<span style="color:#f92672">.</span><span style="color:#a6e22e">computeIfAbsent</span><span style="color:#f92672">(</span>factoryTypeName<span style="color:#f92672">,</span> key <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;())</span>
+                            <span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>factoryImplementationName<span style="color:#f92672">.</span><span style="color:#a6e22e">trim</span><span style="color:#f92672">());</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#75715e">// 实现类去重, 并将其设置为不可变List
+</span><span style="color:#75715e"></span>        result<span style="color:#f92672">.</span><span style="color:#a6e22e">replaceAll</span><span style="color:#f92672">((</span>factoryType<span style="color:#f92672">,</span> implementations<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> implementations<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">distinct</span><span style="color:#f92672">()</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">collectingAndThen</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">(),</span> Collections<span style="color:#f92672">::</span>unmodifiableList<span style="color:#f92672">)));</span>
+        <span style="color:#75715e">// 加入缓存
+</span><span style="color:#75715e"></span>        cache<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>classLoader<span style="color:#f92672">,</span> result<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Unable to load factories from location [&#34;</span> <span style="color:#f92672">+</span>
+                FACTORIES_RESOURCE_LOCATION <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>SpringFactoriesLoader共有两个public方法</p>
+<ol>
+<li>第一个根据给定的Class获取其实现类名称List, 方法比较简单，不再详细解释</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">loadFactoryNames</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?&gt;</span> factoryType<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> ClassLoader classLoader<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    ClassLoader classLoaderToUse <span style="color:#f92672">=</span> classLoader<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>classLoaderToUse <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        classLoaderToUse <span style="color:#f92672">=</span> SpringFactoriesLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    String factoryTypeName <span style="color:#f92672">=</span> factoryType<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">return</span> loadSpringFactories<span style="color:#f92672">(</span>classLoaderToUse<span style="color:#f92672">).</span><span style="color:#a6e22e">getOrDefault</span><span style="color:#f92672">(</span>factoryTypeName<span style="color:#f92672">,</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">emptyList</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ol start="2">
+<li>第二个根据给定的Class获取其实现类实例List</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">loadFactories</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> factoryType<span style="color:#f92672">,</span> <span style="color:#a6e22e">@Nullable</span> ClassLoader classLoader<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>factoryType<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#39;factoryType&#39; must not be null&#34;</span><span style="color:#f92672">);</span>
+    ClassLoader classLoaderToUse <span style="color:#f92672">=</span> classLoader<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>classLoaderToUse <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        classLoaderToUse <span style="color:#f92672">=</span> SpringFactoriesLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 获取实现类名称集合
+</span><span style="color:#75715e"></span>    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> factoryImplementationNames <span style="color:#f92672">=</span> loadFactoryNames<span style="color:#f92672">(</span>factoryType<span style="color:#f92672">,</span> classLoaderToUse<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>logger<span style="color:#f92672">.</span><span style="color:#a6e22e">isTraceEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">trace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Loaded [&#34;</span> <span style="color:#f92672">+</span> factoryType<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;] names: &#34;</span> <span style="color:#f92672">+</span> factoryImplementationNames<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    List<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>factoryImplementationNames<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
+    <span style="color:#75715e">// 实例化所有的实现类
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String factoryImplementationName <span style="color:#f92672">:</span> factoryImplementationNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        result<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>instantiateFactory<span style="color:#f92672">(</span>factoryImplementationName<span style="color:#f92672">,</span> factoryType<span style="color:#f92672">,</span> classLoaderToUse<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 按照PriorityOrder、Order排序
+</span><span style="color:#75715e"></span>    AnnotationAwareOrderComparator<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>result<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>使用反射得到实现类的实例</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">instantiateFactory</span><span style="color:#f92672">(</span>String factoryImplementationName<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> factoryType<span style="color:#f92672">,</span> ClassLoader classLoader<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 获取实现类的Class对象, 因为只配置了名称
+</span><span style="color:#75715e"></span>        Class<span style="color:#f92672">&lt;?&gt;</span> factoryImplementationClass <span style="color:#f92672">=</span> ClassUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span>factoryImplementationName<span style="color:#f92672">,</span> classLoader<span style="color:#f92672">);</span>
+        <span style="color:#75715e">// 必须是factoryType的实现类
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>factoryType<span style="color:#f92672">.</span><span style="color:#a6e22e">isAssignableFrom</span><span style="color:#f92672">(</span>factoryImplementationClass<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>
+                    <span style="color:#e6db74">&#34;Class [&#34;</span> <span style="color:#f92672">+</span> factoryImplementationName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;] is not 
+</span><span style="color:#e6db74">                    assignable to factory type [&#34;</span> <span style="color:#f92672">+</span> factoryType<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#75715e">// 使用newInstance 反射的方式创建对象, 必须存在无参构造函数
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>T<span style="color:#f92672">)</span> ReflectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">accessibleConstructor</span><span style="color:#f92672">(</span>factoryImplementationClass<span style="color:#f92672">).</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Throwable ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span>
+                <span style="color:#e6db74">&#34;Unable to instantiate factory class [&#34;</span> <span style="color:#f92672">+</span> 
+                factoryImplementationName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;] for factory type [&#34;</span> <span style="color:#f92672">+</span> factoryType<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">,</span>
+                ex<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>下面简单说下SpringFactoriesLoader的用法</p>
+<p>创建Interface: Color, 实现类: Red、Green</p>
+<p>在classpath下创建 META-INF/spring.factories, 内容是：</p>
+<pre tabindex="0"><code>Color=Red,Green
+</code></pre><p>测试方法如下:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e">* 通过自定义 META-INF/spring.factories, 可以使用Spring SPI机制
+</span><span style="color:#75715e">* 当实现Spring Interface的时候, 就可以进行自定义扩展了
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testColor</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    List<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> colors <span style="color:#f92672">=</span> SpringFactoriesLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">loadFactories</span><span style="color:#f92672">(</span>Color<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+
+    colors<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://xiaodabao.github.io/blog/" >
+    &copy;  肖大宝的技术博客 2021 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

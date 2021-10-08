@@ -130,6 +130,33 @@
       
       <div class="blah w-100">
         <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/blog/posts/springfactoriesloader/" class="color-inherit dim link">
+            SpringFactoriesLoader
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。
+Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:
+ 查找指定路径classpath:META-INF/spring.factories的所有文件。 通过PropertiesLoaderUtils加载为Properties对象 解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据 将implementationNames去重，并转换为不可变List 将全部数据以ClassLoader为key存入cache中 根据本次要加载的类型，实例化此类型下所有的实现类 所有的实现类按照PriorityOrdered、Ordered优先级依次排序  首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&lt;Interface, Implements&gt; 的形式。
+public static final String FACTORIES_RESOURCE_LOCATION = &#34;META-INF/spring.factories&#34;; static final Map&lt;ClassLoader, Map&lt;String, List&lt;String&gt;&gt;&gt; cache = new ConcurrentReferenceHashMap&lt;&gt;(); /** * 根据ClassLoader加载所有的数据 key: interfaceName --&gt; value: implementationNames * @param classLoader * @return */ private static Map&lt;String, List&lt;String&gt;&gt; loadSpringFactories(ClassLoader classLoader) { // 首先从缓存中获取  Map&lt;String, List&lt;String&gt;&gt; result = cache.get(classLoader); if (result !
+        </div>
+          <a href="/blog/posts/springfactoriesloader/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+          <div class="relative w-100 mb4">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+    <div class="flex flex-column flex-row-ns">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
           <a href="/blog/posts/shortestresponse/" class="color-inherit dim link">
             ShortestResponse
             </a>

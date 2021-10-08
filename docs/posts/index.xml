@@ -6,7 +6,19 @@
     <description>Recent content in Posts on 肖大宝的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 21 Aug 2021 00:16:39 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 Sep 2021 15:16:34 +0800</lastBuildDate><atom:link href="https://xiaodabao.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SpringFactoriesLoader</title>
+      <link>https://xiaodabao.github.io/blog/posts/springfactoriesloader/</link>
+      <pubDate>Wed, 29 Sep 2021 15:16:34 +0800</pubDate>
+      
+      <guid>https://xiaodabao.github.io/blog/posts/springfactoriesloader/</guid>
+      <description>SPI, 全称 Service Provider Interface, 是一种服务发现机制。今天来分析一下Spring中的SPI机制是如何实现的。
+Spring中的SPI机制是通过类SpringFactoriesLoader来实现的，主要步骤如下:
+ 查找指定路径classpath:META-INF/spring.factories的所有文件。 通过PropertiesLoaderUtils加载为Properties对象 解析Properties中的数据, key为抽象类型interface/abstractType, value按照逗号分割为实现类型的名称集合implementationNames，在这个过程中合并不同spring.factories文件中相同类型的数据 将implementationNames去重，并转换为不可变List 将全部数据以ClassLoader为key存入cache中 根据本次要加载的类型，实例化此类型下所有的实现类 所有的实现类按照PriorityOrdered、Ordered优先级依次排序  首先分析方法 loadSpringFactories(ClassLoader classLoader), 加载所有的classpath:META-INF/spring.factories文件，并将其解析为Map&amp;lt;Interface, Implements&amp;gt; 的形式。
+public static final String FACTORIES_RESOURCE_LOCATION = &amp;#34;META-INF/spring.factories&amp;#34;; static final Map&amp;lt;ClassLoader, Map&amp;lt;String, List&amp;lt;String&amp;gt;&amp;gt;&amp;gt; cache = new ConcurrentReferenceHashMap&amp;lt;&amp;gt;(); /** * 根据ClassLoader加载所有的数据 key: interfaceName --&amp;gt; value: implementationNames * @param classLoader * @return */ private static Map&amp;lt;String, List&amp;lt;String&amp;gt;&amp;gt; loadSpringFactories(ClassLoader classLoader) { // 首先从缓存中获取  Map&amp;lt;String, List&amp;lt;String&amp;gt;&amp;gt; result = cache.get(classLoader); if (result !</description>
+    </item>
+    
     <item>
       <title>ShortestResponse</title>
       <link>https://xiaodabao.github.io/blog/posts/shortestresponse/</link>
