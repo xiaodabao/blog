@@ -103,6 +103,25 @@
   <div class="bg-white mb3 pa4 gray overflow-hidden">
     <span class="f6 db">Posts</span>
     <h1 class="f3 near-black">
+      <a href="/blog/posts/springresource/" class="link black dim">
+        SpringResource
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      在Spring中, 所有的class, 配置文件等都被抽象为资源, 即Spring的Resource接口. 今天主要来分析Spring加载class文件的过程.
+Spring是通过ComponentScan这个注解来配置需要扫描的包路径，而ComponentScanAnnotationParser类就是用来解析ComponentScan注解的. 具体的步骤为：
+ 入口为ComponentScanAnnotationParser.parse, 解析ComponentScan, 获取配置的basePackages和basePackageClasses(会被转为包路径)属性. 当未配置时, 获取启动类的包路径. 接着调用ClassPathBeanDefinitionScanner的doScan方法 调用父类ClassPathScanningCandidateComponentProvider.findCandidateComponents -&gt; scanCandidateComponents 调用PathMatchingResourcePatternResolver.getResources方法, 在这个方法中, 因为我们传入的locationPattern参数是classpath*:为前缀的值, 所以最终调用findPathMatchingResources方法 在findPathMatchingResources方法中, 首先加载目录的Resource(底层还是调用ClassLoader.getResources方法), 然后遍历目录, 根据得到的URL的协议(file、jar、vfs等)分别进行资源加载 本次分析Jar和FileSystem文件资源的加载过程.  首先分析FileSystem资源的加载, 在本地IDE进行调试时, 本项目内的class文件都会最终加载为FileSystemResource, 路径为target/classes/目录下的class文件。
+由ClassLoader.getResources(path)方法可以得到资源目录的URL, 并将其封装为UrlResource, 代码如下:
+/** * 查找指定路径, 并将其转为URLResource, 路径可能在多个位置存在, 所以返回Set集合 * @param path 包的相对路径 例如: org/example/simple * @return * @throws IOException */ private static Set&lt;Resource&gt; doFindAllClassPathResource(String path) throws IOException { Set&lt;Resource&gt; result = new LinkedHashSet&lt;&gt;(16); ClassLoader cl = FileSystemResourceTest.class.getClassLoader(); Enumeration&lt;URL&gt; resourceUrls = cl.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
       <a href="/blog/posts/springfactoriesloader/" class="link black dim">
         SpringFactoriesLoader
       </a>
